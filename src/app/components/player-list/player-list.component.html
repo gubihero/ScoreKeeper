@@ -1,0 +1,5 @@
+@for (player of players; track player.firstName && player.lastName) {
+    {{ player.firstName }} {{ player.lastName }}
+} @empty {
+    Empty List of Players
+}
