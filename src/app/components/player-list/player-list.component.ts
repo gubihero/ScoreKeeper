@@ -24,7 +24,7 @@ export class PlayerListComponent implements OnInit, OnDestroy {
       next: (players: Player[]) => {
         this.players = players;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.log('err: ', err.message);
       },
       complete: () => {
