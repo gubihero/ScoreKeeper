@@ -10,9 +10,9 @@ export class PlayersService {
   constructor() { }
 
   players: Player[] = [
-    { firstName: 'Joe', lastName: 'Somebody' },
-    { firstName: 'Frank', lastName: 'Frankington' },
-    { firstName: 'Tim', lastName: 'The Enchanter' },
+    { id: 1, firstName: 'Joe', lastName: 'Somebody' },
+    { id: 2, firstName: 'Frank', lastName: 'Frankington' },
+    { id: 3, firstName: 'Tim', lastName: 'The Enchanter' },
   ];
 
   fetchPlayers(): Observable<Player[]> {
@@ -20,11 +20,18 @@ export class PlayersService {
   }
 
   fetchPlayer(playerId: number): Observable<Player> {
-    const player = this.players.find(p => p.id);
+    const player = this.players.find(p => {
+      return p.id == playerId}
+    );
+    
     if(player) {
       return of(player);
     } else {
-      const error: HttpErrorResponse = {}
+      const error = {
+        error: "Error",
+        message: "Player Not Found",
+        status: 404
+      }
       return throwError(() => error)
     }
   }

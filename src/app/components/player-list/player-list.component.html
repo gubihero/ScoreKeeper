@@ -1,5 +1,5 @@
 <div>
-@for (player of players; track player.firstName && player.lastName) {
+@for (player of players; track player.id) {
     {{ player.firstName }} {{ player.lastName }}
 } @empty {
     Empty List of Players

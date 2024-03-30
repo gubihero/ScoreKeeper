@@ -2,11 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Player } from '../../interfaces/player.interface';
 import { Subscription } from 'rxjs';
 import { PlayersService } from '../../services/players.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-player-list',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './player-list.component.html',
   styleUrl: './player-list.component.scss'
 })
