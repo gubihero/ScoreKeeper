@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { Player } from '../interfaces/player.interface';
 
 @Injectable({
@@ -9,12 +9,23 @@ export class PlayersService {
 
   constructor() { }
 
+  players: Player[] = [
+    { firstName: 'Joe', lastName: 'Somebody' },
+    { firstName: 'Frank', lastName: 'Frankington' },
+    { firstName: 'Tim', lastName: 'The Enchanter' },
+  ];
+
   fetchPlayers(): Observable<Player[]> {
-    const defaultPlayers: Player[] = [
-      { firstName: 'Joe', lastName: 'Somebody' },
-      { firstName: 'Frank', lastName: 'Frankington' },
-      { firstName: 'Tim', lastName: 'The Enchanter' },
-    ];
-    return of(defaultPlayers);
+    return of(this.players);
+  }
+
+  fetchPlayer(playerId: number): Observable<Player> {
+    const player = this.players.find(p => p.id);
+    if(player) {
+      return of(player);
+    } else {
+      const error: HttpErrorResponse = {}
+      return throwError(() => error)
+    }
   }
 }
