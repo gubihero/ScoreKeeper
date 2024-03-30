@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Player } from '../../interfaces/player.interface';
 import { PlayersService } from '../../services/players.service';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-player-detail',
@@ -9,22 +10,22 @@ import { PlayersService } from '../../services/players.service';
   templateUrl: './player-detail.component.html',
   styleUrl: './player-detail.component.scss'
 })
-export class PlayerDetailComponent implements OnInit{
+export class PlayerDetailComponent implements OnInit, OnDestroy{
   player: Player | null = null;
-  playerId: number = 0;
+  player$: Observable<Player> | null = null;
+  playerSub$: Subscription | undefined = undefined;
 
   @Input() 
     set id(playerId: number) {
-      console.log(playerId);
-      this.playerId = playerId;
+      this.player$ = this.playerService.fetchPlayer(playerId);
     }
 
   constructor(private playerService: PlayersService) {
     
   }
 
-  ngOnInit() {
-    this.playerService.fetchPlayer(this.playerId).subscribe({
+  ngOnInit(): void {
+    this.playerSub$ = this.player$?.subscribe({
       next: player => {
         this.player = player;
       },
@@ -32,5 +33,9 @@ export class PlayerDetailComponent implements OnInit{
         console.log(err.message);
       } 
     });
+  }
+
+  ngOnDestroy(): void {
+    this.playerSub$?.unsubscribe();
   }
 }
